@@ -1,0 +1,78 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: api-gateway
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: false
+      
+      routes:
+        # 1. Todo lo de identidad, perfiles, roles y login se va a MS-USUARIOS
+        - id: usuarios-route
+          uri: lb://MS-USUARIOS
+          predicates:
+            - Path=/api/usuarios/**,/api/roles/**,/api/auth/**
+
+        # 2. Todo lo de tarjetas y finanzas se va a MS-CLIENTES
+        - id: clientes-route
+          uri: lb://MS-CLIENTES
+          predicates:
+            - Path=/api/clientes/**
+
+        # 3. Todo lo de proveedores y documentos se va a MS-PROVEEDORES
+        - id: proveedores-route
+          uri: lb://MS-PROVEEDORES
+          predicates:
+            - Path=/api/proveedores/**
+
+        # 4. Todo lo de catálogo, stock y categorías se va a MS-PRODUCTOS
+        - id: productos-route
+          uri: lb://MS-PRODUCTOS
+          predicates:
+            - Path=/api/productos/**
+          
+        # 5. Todo lo de carrito y checkout se va a MS-VENTA
+        - id: ventas-route
+          uri: lb://MS-VENTA
+          predicates:
+            - Path=/api/ventas/**
+
+        # 6. Todo lo de reclamos y disputas se va a MS-TICKET
+        - id: tickets-route
+          uri: lb://MS-TICKET
+          predicates:
+            - Path=/api/tickets/**
+
+        # 7. Todo lo de correos y alertas se va a MS-NOTIFICACION
+        - id: notificacion-route
+          uri: lb://MS-NOTIFICACION
+          predicates:
+            - Path=/api/notificaciones/**
+
+        # ¡NUEVO! 8. Todo lo de gobernanza, moderación y baneos se va a MS-ADMINISTRACION
+        - id: administracion-route
+          uri: lb://MS-ADMINISTRACION
+          predicates:
+            - Path=/api/admin/**
+
+        # ¡NUEVO! 9. Todo lo de reseñas y calificaciones se va a MS-FEEDBACK
+        - id: feedback-route
+          uri: lb://MS-FEEDBACK
+          predicates:
+            - Path=/api/feedback/**
+
+# ==========================================
+# CONFIGURACIÓN DE EUREKA
+# ==========================================
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+  instance:
+    prefer-ip-address: true
