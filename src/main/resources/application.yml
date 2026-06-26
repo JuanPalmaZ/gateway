@@ -1,5 +1,5 @@
 server:
-  port: 8080
+  port: ${PORT:8080}
 
 spring:
   application:
@@ -73,10 +73,8 @@ eureka:
     register-with-eureka: true
     fetch-registry: true
     service-url:
-      # 1. Agregado el /eureka/ al final
       defaultZone: https://eureka-server-wp64.onrender.com/eureka/
+
   instance:
-    # 2. Desactivamos el uso de IP interna
     prefer-ip-address: false
-    # 3. Le decimos que use el hostname que Render le asigna (si existe), o localhost en local
     hostname: ${RENDER_EXTERNAL_HOSTNAME:localhost}
