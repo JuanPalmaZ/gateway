@@ -73,6 +73,10 @@ eureka:
     register-with-eureka: true
     fetch-registry: true
     service-url:
-      defaultZone: https://eureka-server-wp64.onrender.com/
+      # 1. Agregado el /eureka/ al final
+      defaultZone: https://eureka-server-wp64.onrender.com/eureka/
   instance:
-    prefer-ip-address: true
+    # 2. Desactivamos el uso de IP interna
+    prefer-ip-address: false
+    # 3. Le decimos que use el hostname que Render le asigna (si existe), o localhost en local
+    hostname: ${RENDER_EXTERNAL_HOSTNAME:localhost}
